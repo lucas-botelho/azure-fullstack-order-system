@@ -46,7 +46,7 @@ namespace OrderFunction
             }
             catch (Exception ex)
             {
-                log.LogError(ex, "Failed to process message: " + myQueueItem);
+                log.LogError(ex, "Failed to process message: " + myQueueItem + " : " + ex.Message);
                 throw;
             }
         }
