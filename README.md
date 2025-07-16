@@ -101,6 +101,7 @@ During development:
 ---
 
 
+```plaintext
 React (Frontend)
    |
    v
@@ -113,4 +114,3 @@ React (Frontend)
                                    v
                         Azure Function (Process Order)
                              └─> Update order status to "Processed"
-
