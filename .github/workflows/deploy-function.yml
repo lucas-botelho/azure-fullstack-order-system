@@ -21,11 +21,13 @@ jobs:
       - name: Publish Azure Function
         run: dotnet publish ./OrderFunction/OrderFunction.csproj --configuration Release --output ./publish
 
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Deploy to Azure Function App
         uses: Azure/functions-action@v1
         with:
           app-name: orders-processor-fn-cucddrcvc6cudad9
           package: ./publish
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-          scm-do-build-during-deployment: true
-          respect-funcignore: true
