@@ -27,3 +27,5 @@ jobs:
           app-name: orders-processor-fn-cucddrcvc6cudad9
           package: ./publish
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          scm-do-build-during-deployment: true
+          respect-funcignore: true
