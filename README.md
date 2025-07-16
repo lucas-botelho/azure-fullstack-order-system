@@ -4,7 +4,7 @@ This repository contains a small fullstack system that demonstrates:
 - A .NET 8 REST API to create and persist orders.
 - A React frontend to submit new orders.
 - An Azure Function to consume messages from Azure Service Bus and update the order status to "Processed".
-- A CI/CD pipeline using `azure-pipelines.yml` to build and deploy the full solution.
+- A CI/CD pipeline to build and deploy the full solution.
 - A placeholder infrastructure file using Bicep (`infra.bicep`).
 
 ## Solution Structure
@@ -99,3 +99,18 @@ During development:
 - [Azure Pipelines YAML schema](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema)
 
 ---
+
+
+```plaintext
+React (Frontend)
+   |
+   v
+.NET 8 API (POST /orders) ─────────┐
+   |                               │
+   └─> Save order to SQL Server    │
+                                   v
+                        Azure Service Bus (Queue)
+                                   |
+                                   v
+                        Azure Function (Process Order)
+                             └─> Update order status to "Processed"
