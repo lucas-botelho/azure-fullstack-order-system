@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-function:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
       - name: Publish Azure Function
         run: dotnet publish ./OrderFunction/OrderFunction.csproj --configuration Release --output ./publish
@@ -31,3 +31,30 @@ jobs:
         with:
           app-name: orders-processor-fn
           package: ./publish
+
+  build-and-deploy-webapp:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy-function
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Publish Web App
+        run: dotnet publish ./OrdersApi/OrdersApi.csproj --configuration Release --output ./webpublish
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: orders-api
+          package: ./webpublish
